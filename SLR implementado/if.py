@@ -7,16 +7,20 @@ import threading
 import platform
 import SLR
 
-#Velocidade ---------------------------------------------
-razao = 2
-#--------------------------------------------------------
+def conditions(coordenatesTarget, listRectangles):
+    target = [coordenatesTarget[i]*(-1) if i%3==0 else coordenatesTarget[i] for i in range(4)]
+    positions = {0: 'top', 1: 'right', 2: 'bottom', 3: 'left'}
+    print(target)
+    # print(listRectangles)
+    # print(rec)
 
-#Direções -----------------------------------------------
-cima = 0
-direita = 1
-baixo = 2
-esquerda = 3
-#--------------------------------------------------------
+    for direction in range(4):
+        for rectangle in range(3,-1,-1):
+            if listRectangles[rectangle][0][direction] >= target[direction]:
+                print('r{}: {}'.format(rectangle, direction))
+                print(listRectangles[rectangle][0][direction], target[direction])
+                # return rectangle
+                break
 
 #Propriedades do primeiro retângulo - R0  ---------------
 altura_ret_0 = 200 #altura do retângulo 0
@@ -117,27 +121,12 @@ def process(worker_id, read_frame_list, write_frame_list, Global, worker_num):
 
             name = "Desconhecido"
 
+            conditions(face_locations[0], lista_ret) # <----------------------------------------
+
             # If a match was found in known_face_encodings, just use the first one.
             if True in matches:
                 first_match_index = matches.index(True)
                 name = known_face_names[first_match_index]
-
-
-def conditions(coordenatesTarget, coordenatesRectangles):
-    target = [coordenatesTarget[i] for i in range(4)]
-    positions = {0: 'top', 1: 'right', 2: 'bottom', 3: 'left'}
-
-    for direction in range(4):
-        for rectangle in range(4):
-            if coordenatesRectangles[rectangle][0][direction] > target[0][direction]:
-                print('r{}: {}'.format(rectangle, position.get(direction)))
-                # return rectangle
-                break
-
-            conditions(face_locations, lista_ret)
-
-
-            #print("\n")
 
             # Draw a box around the face
             cv2.rectangle(frame_process, (left, top), (right, bottom), (0, 0, 255), 2)
@@ -146,7 +135,7 @@ def conditions(coordenatesTarget, coordenatesRectangles):
             cv2.rectangle(frame_process, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame_process, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
+        
         # Wait to write
         while Global.write_num != worker_id:
             time.sleep(0.01)
