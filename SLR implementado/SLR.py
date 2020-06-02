@@ -26,12 +26,11 @@ def criaRet(altura, largura, cor, frame_process, vel):  #Cria um retângulo de a
     p0 = (esquerda, cima) #Ponto p0 do retângulo
     p1 = (direita, baixo) #Ponto p1 do retângulo
 
-    p0_l = [esquerda, cima] #Ponto p0 do retângulo em formato de lista
-    p1_l = [direita, baixo] #Ponto p1 do retângulo em formato de lista
+    pL = [cima*(-1), direita, baixo, esquerda*(-1)] #Ponto p0 do retângulo em formato de lista
 
     cv2.rectangle(frame_process, p0, p1, cor, 1) #Escreve o retângulo
 
-    ret = [p0_l, p1_l, vel] #Cria vetor Retângulo que contem os pontos formadores e a velocidade
+    ret = [pL, vel] #Cria vetor Retângulo que contem os pontos formadores e a velocidade
 
     return ret
 

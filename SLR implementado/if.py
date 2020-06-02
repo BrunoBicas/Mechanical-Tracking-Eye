@@ -36,108 +36,6 @@ laranja = (0, 165, 255)
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 #-----------------------------------------------------------------------------------------------------------
-def soma_dir(direcao, lista_ret, top, right, bottom, left):
-
-    #t1 = t2 = t3 = t4 = 0
-    if direcao == esquerda:
-      
-        if lista_ret[0][0][0] >= left:
-            t1=razao
-        else:
-            t1=0
-
-        if lista_ret[1][0][0] >= left:
-            t2=razao
-        else:
-            t2=0
-        
-        if lista_ret[2][0][0] >= left:  
-            t3=razao
-        else:
-            t3=0
-        
-        if lista_ret[3][0][0] >= left:  
-            t4=razao
-        else:
-            t4=0
-
-        return (t1 + t2 + t3 + t4)
-
-    elif direcao == cima:
-
-        if lista_ret[0][0][1] >= top:
-            t1=razao
-        else:
-            t1=0
-
-        if lista_ret[1][0][1] >= top:
-            t2=razao
-        else:
-            t2=0
-        
-        if lista_ret[2][0][1] >= top:  
-            t3=razao
-        else:
-            t3=0
-        
-        if lista_ret[3][0][1] >= top:  
-            t4=razao
-        else:
-            t4=0
-
-        return (t1 + t2 + t3 + t4)
-
-    elif direcao == direita:
-
-        if lista_ret[0][1][0] <= right:
-            t1=razao
-        else:
-            t1=0
-
-        if lista_ret[1][1][0] <= right:
-            t2=razao
-        else:
-            t2=0
-        
-        if lista_ret[2][1][0] <= right:  
-            t3=razao
-        else:
-            t3=0
-        
-        if lista_ret[3][1][0] <= right:  
-            t4=razao
-        else:
-            t4=0
-
-        return (t1 + t2 + t3 + t4)
-        
-
-    elif direcao == baixo:
-      
-        if lista_ret[0][1][1] <= bottom:
-            t1=razao
-        else:
-            t1=0
-
-        if lista_ret[1][1][1] <= bottom:
-            t2=razao
-        else:
-            t2=0
-        
-        if lista_ret[2][1][1] <= bottom:  
-            t3=razao
-        else:
-            t3=0
-        
-        if lista_ret[3][1][1] <= bottom:  
-            t4=razao
-        else:
-            t4=0
-        
-        return (t1 + t2 + t3 + t4)
-
-    
-
 # Get next worker's id
 def next_id(current_id, worker_num):
     if current_id == worker_num:
@@ -212,7 +110,6 @@ def process(worker_id, read_frame_list, write_frame_list, Global, worker_num):
         ret0 = SLR.criaRet(altura_ret_0, largura_ret_0, roxo, frame_process, 1) #Cria R0
         lista_ret = SLR.criaListaRetangulos(ret0, 3, frame_process) #Cria lista de retângulos após R0 
     
-        
         # Loop through each face in this frame of video
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
             # See if the face is a match for the known face(s)
@@ -225,37 +122,20 @@ def process(worker_id, read_frame_list, write_frame_list, Global, worker_num):
                 first_match_index = matches.index(True)
                 name = known_face_names[first_match_index]
 
-                #lista_ret[rn] [ponto] [[x, y]]     
-                #   -> rn é o Retângulo n
-                #   -> ponto é p0 ou p1
-                #   -> x e y são as coordenadas do ponto
-    
-                #lista_ret[0][0][0] -> r0 -> [p0] -> esquerda
-                #lista_ret[0][0][1] -> r0 -> [p0] -> cima
-                #lista_ret[0][1][0] -> r0 -> [p1] -> direita
-                #lista_ret[0][1][1] -> r0 -> [p1] -> baixo
 
-                #lista_ret[1][0][0] -> r1 -> [p0] -> esquerda
-                #lista_ret[1][0][1] -> r1 -> [p0] -> cima
-                #lista_ret[1][1][0] -> r1 -> [p1] -> direita
-                #lista_ret[1][1][1] -> r1 -> [p1] -> baixo
+def conditions(coordenatesTarget, coordenatesRectangles):
+    target = [coordenatesTarget[i] for i in range(4)]
+    positions = {0: 'top', 1: 'right', 2: 'bottom', 3: 'left'}
 
-                #lista_ret[2][0][0] -> r2 -> [p0] -> esquerda
-                #lista_ret[2][0][1] -> r2 -> [p0] -> cima
-                #lista_ret[2][1][0] -> r2 -> [p1] -> direita
-                #lista_ret[2][1][1] -> r2 -> [p1] -> baixo
+    for direction in range(4):
+        for rectangle in range(4):
+            if coordenatesRectangles[rectangle][0][direction] > target[0][direction]:
+                print('r{}: {}'.format(rectangle, position.get(direction)))
+                # return rectangle
+                break
 
-                #lista_ret[3][0][0] -> r3 -> [p0] -> esquerda
-                #lista_ret[3][0][1] -> r3 -> [p0] -> cima
-                #lista_ret[3][1][0] -> r3 -> [p1] -> direita
-                #lista_ret[3][1][1] -> r3 -> [p1] -> baixo
-                
-                #-------------------------------------------------------------------------
+            conditions(face_locations, lista_ret)
 
-                print('Soma top: %d' % (soma_dir(cima, lista_ret, top, right, bottom, left)))
-                print('Soma right: %d' % (soma_dir(direita, lista_ret, top, right, bottom, left)))
-                print('Soma bottom: %d' % (soma_dir(baixo, lista_ret, top, right, bottom, left)))
-                print('Soma left: %d' % (soma_dir(esquerda, lista_ret, top, right, bottom, left)))
 
             #print("\n")
 
