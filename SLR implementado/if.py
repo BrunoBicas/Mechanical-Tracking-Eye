@@ -16,6 +16,10 @@ def conditions(coordenatesTarget, listRectangles):
         for rectangle in range(limit_Numbers-1):
             if listRectangles[rectangle][0][direction] <= target[direction] and listRectangles[rectangle+1][0][direction] > target[direction]:
                 print('r{}: {}'.format(rectangle, positions.get(direction)))
+                return rectangle
+            elif listRectangles[limit_Numbers-1][0][direction] == target[direction]:
+                print('r{}: {}'.format(limit_Numbers - 2, positions.get(direction)))
+                return limit_Numbers - 2
 
 #Propriedades do primeiro retângulo - R0  ---------------
 altura_ret_0 = 200 #altura do retângulo 0
