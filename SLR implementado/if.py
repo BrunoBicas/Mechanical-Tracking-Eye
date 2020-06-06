@@ -10,17 +10,12 @@ import SLR
 def conditions(coordenatesTarget, listRectangles):
     target = [coordenatesTarget[i]*(-1) if i%3==0 else coordenatesTarget[i] for i in range(4)]
     positions = {0: 'top', 1: 'right', 2: 'bottom', 3: 'left'}
-    print(target)
-    # print(listRectangles)
-    # print(rec)
+    limit_Numbers = len(listRectangles)
 
     for direction in range(4):
-        for rectangle in range(3,-1,-1):
-            if listRectangles[rectangle][0][direction] >= target[direction]:
-                print('r{}: {}'.format(rectangle, direction))
-                print(listRectangles[rectangle][0][direction], target[direction])
-                # return rectangle
-                break
+        for rectangle in range(limit_Numbers-1):
+            if listRectangles[rectangle][0][direction] <= target[direction] and listRectangles[rectangle+1][0][direction] > target[direction]:
+                print('r{}: {}'.format(rectangle, positions.get(direction)))
 
 #Propriedades do primeiro retângulo - R0  ---------------
 altura_ret_0 = 200 #altura do retângulo 0
