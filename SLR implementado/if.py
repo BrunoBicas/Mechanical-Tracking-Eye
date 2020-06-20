@@ -7,20 +7,6 @@ import threading
 import platform
 import SLR
 
-def conditions(coordenatesTarget, listRectangles):
-    target = [coordenatesTarget[i]*(-1) if i%3==0 else coordenatesTarget[i] for i in range(4)]
-    positions = {0: 'top', 1: 'right', 2: 'bottom', 3: 'left'}
-    limit_Numbers = len(listRectangles)
-
-    for direction in range(4):
-        for rectangle in range(limit_Numbers-1):
-            if listRectangles[rectangle][0][direction] <= target[direction] and listRectangles[rectangle+1][0][direction] > target[direction]:
-                print('r{}: {}'.format(rectangle, positions.get(direction)))
-                return rectangle
-            elif listRectangles[limit_Numbers-1][0][direction] == target[direction]:
-                print('r{}: {}'.format(limit_Numbers - 2, positions.get(direction)))
-                return limit_Numbers - 2
-
 #Propriedades do primeiro retângulo - R0  ---------------
 altura_ret_0 = 200 #altura do retângulo 0
 largura_ret_0 = 300 #largura do retângulo 0
@@ -120,12 +106,13 @@ def process(worker_id, read_frame_list, write_frame_list, Global, worker_num):
 
             name = "Desconhecido"
 
-            conditions(face_locations[0], lista_ret) # <----------------------------------------
+            # conditions(face_locations[0], lista_ret) # <----------------------------------------
 
             # If a match was found in known_face_encodings, just use the first one.
             if True in matches:
                 first_match_index = matches.index(True)
                 name = known_face_names[first_match_index]
+                SLR.conditions(face_locations[0], lista_ret)
 
             # Draw a box around the face
             cv2.rectangle(frame_process, (left, top), (right, bottom), (0, 0, 255), 2)
